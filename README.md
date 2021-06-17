@@ -13,5 +13,5 @@ ExempleItem item = pool.Spawn();
 
 pool.Releas(item);
 
-pool.ReleasAll(item);
+pool.ReleasAll();
 ```
