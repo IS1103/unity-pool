@@ -27,7 +27,7 @@ public class GOPool<T> where T : MonoBehaviour
     {
         T go;
 
-        if (spwnPos == null&& parent ==null|| spwnPos != null && parent == null)
+        if (spwnPos == null && parent == null|| spwnPos != null && parent == null)
         {
             go = MonoBehaviour.Instantiate<T>(prefab, Vector3.zero, Quaternion.identity);
         }
@@ -46,32 +46,38 @@ public class GOPool<T> where T : MonoBehaviour
         return go;
     }
 
-    public T Spawn(Transform patent = null)
+    public T Spawn(Transform patent = null,bool isActive = true)
     {
         for (int i = 0; i < stateList.Count; i++)
         {
             if (!stateList[i])
             {
-                stateList[i] = true;
+                stateList[i] = isActive;
                 if (patent != null) list[i].gameObject.transform.SetParent(patent);
                 else list[i].gameObject.transform.SetParent(this.parent);
 
-                list[i].gameObject.SetActive(true);
+                list[i].gameObject.SetActive(isActive);
                 return list[i];
             }
         }
 
         if (autoNew)
         {
+            Debug.Log("autoNew");
             T go = New();
-            go.gameObject.SetActive(true);
-            Join(go, true);
+            go.gameObject.SetActive(isActive);
+            Join(go, isActive);
             return go;
         }
         else
         {
             return null;
         }
+    }
+
+    public void SetActive(T go) {
+        Join(go, true);
+        go.gameObject.SetActive(true);
     }
 
     private void Join(T go, bool isActive)
